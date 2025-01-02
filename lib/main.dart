@@ -1,10 +1,21 @@
 import 'package:expense_tracker_app/widgets/expense_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-var kColorScheme= ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 96, 59, 181));
-var kDarkColorScheme=ColorScheme.fromSeed(brightness: Brightness.dark,seedColor: Color.fromARGB(
+var kColorScheme= ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 96, 59, 181));
+var kDarkColorScheme=ColorScheme.fromSeed(brightness: Brightness.dark,seedColor: const Color.fromARGB(
     255, 5, 99, 125));
 void main() {
+  //lock the screen orientation of an app
+
+  // WidgetsFlutterBinding.ensureInitialized();
+  // SystemChrome.setPreferredOrientations([
+  //   DeviceOrientation.portraitUp,
+  // ]).then((value) {
+  //   runApp(const MyApp());
+  // },);
+
+  //without locking the screen orientation of an app
   runApp(const MyApp());
 }
 
@@ -32,7 +43,7 @@ class MyApp extends StatelessWidget {
           foregroundColor: kDarkColorScheme.onPrimaryContainer,
         ),),
       ),
-      themeMode: ThemeMode.dark,
+      themeMode: ThemeMode.light,
       theme: ThemeData().copyWith(
         useMaterial3: true,
         colorScheme: kColorScheme,
@@ -50,7 +61,6 @@ class MyApp extends StatelessWidget {
         textTheme: ThemeData().textTheme.copyWith(
           titleLarge: TextStyle(fontWeight: FontWeight.bold,color: kColorScheme.onSecondaryContainer,fontSize: 16),
         ),
-
         // scaffoldBackgroundColor: Colors.purple.shade200,
       ),
       home: const ExpensePage(),
