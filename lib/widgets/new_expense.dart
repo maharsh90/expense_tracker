@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:expense_tracker_app/models/expense.dart';
 
@@ -25,25 +28,41 @@ class _NewExpenseState extends State<NewExpense> {
   void _presentDatePicker() async{
     final now =DateTime.now();
     final firstDate=DateTime(now.year - 1,now.month,now.day);
-    final _pickedDate= await showDatePicker(context: context, initialDate: now,firstDate: firstDate, lastDate: now);
+    final pickedDate= await showDatePicker(context: context, initialDate: now,firstDate: firstDate, lastDate: now);
     setState(() {
-    _selectedDate=_pickedDate;
+    _selectedDate=pickedDate;
     });
-    print(_selectedDate);
+    debugPrint("${_selectedDate}");
+  }
+
+  void _showDialog(){
+    if(Platform.isIOS){
+      showCupertinoDialog(context: context, builder: (ctx) => CupertinoAlertDialog(
+        title: const Text("Invalid input"),content: const Text("please make sure date,amount and title in proper format"),
+        actions: [
+          TextButton(onPressed: (){
+            Navigator.pop(ctx);
+          }, child: const Text("Okay"))
+        ],
+      ),);
+    }
+    else{
+      showDialog(context: context, builder: (ctx) {
+        return AlertDialog(title: const Text("Invalid input"),content: const Text("please make sure date,amount and title in proper format"),
+          actions: [
+            TextButton(onPressed: (){
+              Navigator.pop(ctx);
+            }, child: const Text("Okay"))
+          ],);
+      },);
+    }
   }
 
   void _submitExpenseData(){
     final enteredAmount=double.tryParse(_amountController.text);
     final amountIsInvalid= enteredAmount==null || enteredAmount<=0;
     if(_titleController.text.trim().isEmpty || amountIsInvalid || _selectedDate==null){
-      showDialog(context: context, builder: (ctx) {
-        return AlertDialog(title: Text("Invalid input"),content: Text("please make sure date,amount and title in proper format"),
-        actions: [
-          TextButton(onPressed: (){
-            Navigator.pop(ctx);
-          }, child: Text("Okay"))
-        ],);
-      },);
+      _showDialog();
       return;
     }
     widget.onAddExpense(Expense(amount: enteredAmount, date: _selectedDate!, title: _titleController.text, category: _selectedCategory));
@@ -62,10 +81,10 @@ class _NewExpenseState extends State<NewExpense> {
     final keyBoardSize=MediaQuery.of(context).viewInsets.bottom;
     return Scaffold(
       body: LayoutBuilder(builder: (context, constraints) {
-        print("minHeight ${constraints.minHeight}");
-        print("maxHeight ${constraints.maxHeight}");
-        print("minWidth ${constraints.minWidth}");
-        print("maxWidth ${constraints.maxWidth}");
+        debugPrint("minHeight ${constraints.minHeight}");
+        debugPrint("maxHeight ${constraints.maxHeight}");
+        debugPrint("minWidth ${constraints.minWidth}");
+        debugPrint("maxWidth ${constraints.maxWidth}");
         final width=constraints.maxWidth; // depends on the width of the parent widget
         return SizedBox(
           height: double.infinity,
@@ -166,7 +185,7 @@ class _NewExpenseState extends State<NewExpense> {
                         const Spacer(),
                         TextButton(onPressed: (){
                           Navigator.pop(context);
-                        }, child: Text("Cancel")),
+                        }, child: const Text("Cancel")),
                         ElevatedButton(onPressed: _submitExpenseData, child: const Text("Save Expense"))
                       ],
                     )
@@ -188,7 +207,7 @@ class _NewExpenseState extends State<NewExpense> {
                       const Spacer(),
                       TextButton(onPressed: (){
                         Navigator.pop(context);
-                      }, child: Text("Cancel")),
+                      }, child: const Text("Cancel")),
                       ElevatedButton(onPressed: _submitExpenseData, child: const Text("Save Expense"))
                     ],
                   )

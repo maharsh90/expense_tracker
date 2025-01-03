@@ -1,6 +1,5 @@
 import 'package:expense_tracker_app/widgets/expense_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 var kColorScheme= ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 96, 59, 181));
 var kDarkColorScheme=ColorScheme.fromSeed(brightness: Brightness.dark,seedColor: const Color.fromARGB(
@@ -32,7 +31,6 @@ class MyApp extends StatelessWidget {
       //   useMaterial3: true,
       // ),
       darkTheme: ThemeData.dark().copyWith(
-        useMaterial3: true,
         colorScheme: kDarkColorScheme,
         cardTheme: const CardTheme().copyWith(
           color: kDarkColorScheme.secondaryContainer,
@@ -45,7 +43,6 @@ class MyApp extends StatelessWidget {
       ),
       themeMode: ThemeMode.light,
       theme: ThemeData().copyWith(
-        useMaterial3: true,
         colorScheme: kColorScheme,
         appBarTheme: const AppBarTheme().copyWith(
           backgroundColor: kColorScheme.onPrimaryContainer,

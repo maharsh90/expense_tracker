@@ -30,7 +30,7 @@ class _ExpensePageState extends State<ExpensePage> {
       _registeredExpenses.remove(expense);
     });
     ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text("Expense deleted"),duration: Duration(seconds: 3),action: SnackBarAction(label: 'undo', onPressed: () {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: const Text("Expense deleted"),duration: const Duration(seconds: 3),action: SnackBarAction(label: 'undo', onPressed: () {
       setState(() {
       _registeredExpenses.insert(expenseIndex, expense);
       });
@@ -44,14 +44,15 @@ class _ExpensePageState extends State<ExpensePage> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    print("width ${MediaQuery.of(context).size.width}");
-    print("height ${MediaQuery.of(context).size.height}");
+    debugPrint("width ${MediaQuery.of(context).size.width}");
+    debugPrint("height ${MediaQuery.of(context).size.height}");
     Widget mainContent = const Center(child: Text("No Expenses found start adding some"),);
     if(_registeredExpenses.isNotEmpty){
       mainContent = ExpensesList(expenses: _registeredExpenses, onRemoveExpense: _removeExpense);
     }
     return Scaffold(
       appBar: AppBar(
+        centerTitle: false,
         title: const Text("Flutter ExpenseTracker"),
         actions: [
           IconButton(onPressed: _openAddExtendedOverlay, icon: const Icon(Icons.add),)
